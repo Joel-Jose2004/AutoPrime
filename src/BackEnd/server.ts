@@ -15,6 +15,7 @@ app.use(express.json())
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 app.get("/Conta",(req,res)=>{
+    req.body
     const q="SELECT*FROM carros where sold=?"
    const v=0;    
     db.query(q,v,(err,data)=>{
@@ -51,6 +52,7 @@ app.post('/getUser',async(req,res)=>{
 
 
 app.get("/PegaOfertas",(req,res)=>{
+    req.body
    const q="select carros.id_carro,carros.brand,carros.model, carros.price,ofertas.oferta,ofertas.id_users,users.name from carros join ofertas on id_carro=ofertas.id_carros join users on ofertas.id_users=users.id_users"
    db.query(q,(err,data)=>{
     if(err) return res.json(err)
@@ -62,7 +64,7 @@ app.post('/Publicar',upload.single("image"),(req,res)=>{
 
 let im="uploads"+"/"+req.file?.filename
 userServices.shared.publicar(req.body,im)
-
+  res.json("Feito")
 })
 
 
@@ -85,7 +87,7 @@ app.delete('/DeleteOffer',(req,res)=>{
     const value=[carId,userId]
     db.query(q,value,(err)=>{
         if(err) console.log(err)
-            console.log("sucesso")
+            res.json("sucesso")
     })
 
 })
@@ -94,7 +96,7 @@ app.post('/createChat',(req,res)=>{
     const {body}=req.body
 
     userServices.shared.createChat(body.userId,body.chat,body.userOpen)
-
+    res.json("feito")
 })
 
 app.post("/getChat",(req,res)=>{

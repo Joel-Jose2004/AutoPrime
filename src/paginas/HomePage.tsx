@@ -1,11 +1,10 @@
-import { Box, Button, Flex, Image, Img, Text, useDisclosure, useToast, ButtonGroup, Input, Avatar, Spinner, Divider } from '@chakra-ui/react';
+import { Box, Button, Flex, Img, Text, useDisclosure, useToast, ButtonGroup, Input, Avatar, Spinner, Divider } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
-import { Card, CardBody, CardFooter } from '@chakra-ui/react'
+import { Card, CardFooter } from '@chakra-ui/react'
 import { FiPhone } from "react-icons/fi";
 import im from "../assets/2021-bugatti-chiron-super-sport-300.jpg";
 import icone from '../assets/FullLogo-removebg-preview.png';
 import { GoMail } from "react-icons/go";
-import { ModalCar } from '../components/publicModalCar';
 import { userService } from '../service/userService';
 import { useNavigate } from 'react-router-dom';
 import { authService } from '../service/authService';
@@ -19,7 +18,6 @@ import {LuFuel} from 'react-icons/lu'
 import { IoColorFillSharp} from 'react-icons/io5'
 import { TbCircuitSwitchClosed } from 'react-icons/tb';
 import {SiCoronaengine} from "react-icons/si"
-import type { carType } from '../types/carType';
 
 
 interface carOfer{
@@ -36,9 +34,7 @@ interface carOfer{
 export function HomePage(){
 
 const [user,setUser]=useState<User>()
-const [carro,setCarro]=useState<carType[]>()
 
-const {isOpen,onOpen,onClose}=useDisclosure()
 const {isOpen:isOpenOferta,onOpen:onOpenOferta,onClose:onCloseOferta}=useDisclosure()
 const {isOpen:isOpenDialog,onOpen:onOpenDialog,onClose:onCloseDialog}=useDisclosure()
 const [logado,setLogado]=useState(false)
@@ -58,7 +54,7 @@ const toast=useToast()
 const [loader,setLoader]=useState(false)
 const [scrolled,setScrolled]=useState(false)
 
-const ver=useEffect(()=>{
+useEffect(()=>{
     verify()
     listAllCars()
     listAllOffersCars()
@@ -98,20 +94,6 @@ useEffect(()=>{
     window.removeEventListener("scroll",handleScroll)
    }
 },[])
-const OpenModalCar=()=>{
-   if(user){
-       onOpen()
-   }else{
-      toast({
-         title: "Erro",
-         description:"Faça o login",
-         status: "error",
-         duration: 3000,
-         isClosable: true
-        })
-   }
-
-}
 
 const abrirDrawer=(id:number,id_owner:number)=>{
   
@@ -121,12 +103,6 @@ const abrirDrawer=(id:number,id_owner:number)=>{
   onOpenOferta()
 }
 
-const Logout=()=>{
-  localStorage.removeItem("auth")
-  localStorage.removeItem("authT")
-  setLogado(false)
-  verify()
-}
 
 useEffect(()=>{
 
@@ -192,7 +168,7 @@ const abrirAlertDialog=(id:number)=>{
                 </Box>
 
               <Box  width={{base:"90%",md:"60%",lg:"10%"}} display={"flex"} padding={"3px"}
-                 alignItems={"center"}  
+                 alignItems={"center"} 
                 gap={{base:"3%",md:"10%",lg:"10%"}}>  
                 
                 
@@ -204,8 +180,8 @@ const abrirAlertDialog=(id:number)=>{
                 </Flex>
                   :
                    <Button 
-                       bg={"blue.800"} _hover={{bg:"blue.800"}}
-                   width={{base:"30%",md:"30%",lg:"30%"}} color='white' onClick={()=>navigate("/Login")}>Login</Button>}
+                      colorScheme='orange'
+                   width={{base:"30%",md:"30%",lg:"90%"}} color='white' onClick={()=>navigate("/Login")}>Login</Button>}
                          
               </Box>
         </Box>
@@ -230,7 +206,7 @@ const abrirAlertDialog=(id:number)=>{
                             se queres vender publica também o teu produto.
                              </Text>
                         <Button width={"50%"} outline='link' colorScheme={"orange"} 
-                         onClick={OpenModalCar}>Publicar</Button>
+                         onClick={()=>navigate("/AddCar")}>Publicar</Button>
                   </Box>
 
 
@@ -425,7 +401,6 @@ const abrirAlertDialog=(id:number)=>{
 
       {/*----- Modal, alert Dialog e Drawer ---------*/}
            
-        <ModalCar isOpen={isOpen} onClose={onClose} dadosUser={user}  />
         <AlertDialogModal isOpen={isOpenDialog} onClose={onCloseDialog} idCarro={idCarro}/>
           
       <Drawer

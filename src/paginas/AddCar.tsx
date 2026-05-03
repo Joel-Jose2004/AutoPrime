@@ -1,34 +1,20 @@
 import { Box, Button, Text ,Img, Select, useToast,Flex,
     FormLabel,VStack, FormControl,Input, Spinner,  } from '@chakra-ui/react';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect,  useState } from 'react';
 import { IoCamera } from 'react-icons/io5';
 import { userService } from '../service/userService';
-import { useNavigate } from 'react-router-dom';
 import { authService } from '../service/authService';
 import type { User } from '../types/userType'
 import type { carType } from '../types/carType';
-
-
-interface carOfer{
-  id_carro:number,
-  brand:string,
-  model:string, 
-  price:number,
-  oferta:number,
-  id_users:number, 
-  name:string
-}
 
 
 export function AddCar(){
 
   const toast=useToast()
 const [user,setUser]=useState<User>()
-const [logado,setLogado]=useState(false)
 const [imagemCarro,setImagem]=useState<File|null>(null)
 const getChatById=userService(state=>state.getChatById)
 const login=authService(state=>state.getUserById)
-const navigate=useNavigate()
 const [carro,setCarro]=useState<carType>()
 const [loader,setLoader]=useState(false)
 const publica=userService(state=>state.publicar)
@@ -85,10 +71,7 @@ useEffect(()=>{
 
 
 const verify=async()=>{
-   const authT=localStorage.getItem("authT")
-    if(authT == "true"){
-          setLogado(true)
-    }
+    
     const auth=localStorage.getItem("auth")||""
     const removeAspas=auth.replace(/"/g,"")
     const converteInteiro=Number(removeAspas)
@@ -100,18 +83,8 @@ const verify=async()=>{
         setUser(undefined)
        })
 
-
 }
 
-
-
-
-const Logout=()=>{
-  localStorage.removeItem("auth")
-  localStorage.removeItem("authT")
-  setLogado(false)
-  verify()
-}
 
 useEffect(()=>{
     if(user!=undefined){

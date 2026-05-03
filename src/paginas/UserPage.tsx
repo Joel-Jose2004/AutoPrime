@@ -2,7 +2,6 @@ import { Box, Button, Flex,  Img, Text, useDisclosure, useToast, ButtonGroup, In
 import React, { useEffect, useRef, useState } from 'react';
 import { Card, CardFooter } from '@chakra-ui/react'
 import icone from '../assets/FullLogo-removebg-preview.png';
-import { ModalCar } from '../components/publicModalCar';
 import { userService } from '../service/userService';
 import { useNavigate } from 'react-router-dom';
 import { authService } from '../service/authService';
@@ -45,9 +44,6 @@ interface carOfer{
 export function UserPage(){
 
 const [user,setUser]=useState<User>()
-
-
-const {isOpen,onClose}=useDisclosure()
 const {isOpen:isOpenOferta,onOpen:onOpenOferta,onClose:onCloseOferta}=useDisclosure()
 const {isOpen:isOpenDialog,onOpen:onOpenDialog,onClose:onCloseDialog}=useDisclosure()
 const [logado,setLogado]=useState(false)
@@ -89,6 +85,8 @@ const verify=async()=>{
    const authT=localStorage.getItem("authT")
     if(authT == "true"){
           setLogado(true)
+    }else{
+      navigate("/")
     }
     const auth=localStorage.getItem("auth")||""
     const removeAspas=auth.replace(/"/g,"")
@@ -304,7 +302,7 @@ const handleInput=(e:React.ChangeEvent<HTMLTextAreaElement>)=>{
                 </Flex>
                   :
                    <Button 
-                       bg={"blue.800"} _hover={{bg:"blue.800"}}
+                        colorScheme='orange'
                    width={{base:"30%",md:"30%",lg:"30%"}} color='white' onClick={()=>navigate("/Login")}>Login</Button>}
                          
               </Box>
@@ -555,7 +553,6 @@ const handleInput=(e:React.ChangeEvent<HTMLTextAreaElement>)=>{
 
       {/*----- Modal, alert Dialog e Drawer ---------*/}
            
-        <ModalCar isOpen={isOpen} onClose={onClose} dadosUser={user}  />
         <AlertDialogModal isOpen={isOpenDialog} onClose={onCloseDialog} idCarro={idCarro}/>
           
       <Drawer

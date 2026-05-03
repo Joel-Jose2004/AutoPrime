@@ -1,7 +1,6 @@
-import { Box, FormControl, FormLabel,Spinner, useTimeout, useToast } from "@chakra-ui/react";
+import { Box, FormControl, FormLabel,Spinner, useToast } from "@chakra-ui/react";
 
-import { Text, Select, Button,Modal, ModalContent, ModalBody, ModalCloseButton, 
-        ModalOverlay, ModalHeader, Input,VStack} from '@chakra-ui/react'
+import { Text,  Button, Input,VStack} from '@chakra-ui/react'
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { authService } from "../service/authService";
@@ -20,21 +19,20 @@ export function Login(){
     const login=authService(state=>state.login)
 
 
-
-
-
     useEffect(()=>{
-      
-      window.addEventListener("keydown",(event)=>{
-     if(event.key=="Enter"){
-        event.preventDefault()
-         logar()
-     }
-    })    
+      const handleKey=(event:KeyboardEvent)=>{
+        if(event.key=="Enter"){
+           event.preventDefault()
+           logar()
+        }
+      }
     
+     window.addEventListener("keydown",handleKey)
+    return ()=>{ 
+      window.removeEventListener("keydown",handleKey)
+    } 
 
     },[])
-
 
     const logar=()=>{
          setLoader(true)
@@ -107,7 +105,7 @@ export function Login(){
                                 
                                 </FormControl>
 
-                                <Button bg={"blue.600"} color={"white"} _hover={{bg:"blue.500"}} w={"100%"}
+                                <Button   colorScheme='orange' w={"100%"}
                                     onClick={logar}>
                                     <Box display={loader ? "flex":"none"}><Spinner/></Box>
                                     {loader ? " ":"Login"}</Button>
