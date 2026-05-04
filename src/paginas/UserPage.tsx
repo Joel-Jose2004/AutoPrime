@@ -298,7 +298,7 @@ const handleInput=(e:React.ChangeEvent<HTMLTextAreaElement>)=>{
                 {logado ? <Flex  width={"80%"} 
                 alignItems={"center"}
                 gap={5}>
-                  <Button width={{base:"30%",md:"30%",lg:"80%"}}  colorScheme='orange' onClick={Logout}>Logout</Button>
+                  <Button width={{base:"30%",md:"30%",lg:"80%"}}  colorScheme='brown' onClick={Logout}>Logout</Button>
                 </Flex>
                   :
                    <Button 
