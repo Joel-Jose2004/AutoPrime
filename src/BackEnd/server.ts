@@ -78,7 +78,6 @@ userServices.shared.oferta(body.carId,body.userId,body.offerValue).then((respons
     return res.json(err)
 })
 
-
 })
 
 app.delete('/DeleteOffer',(req,res)=>{
@@ -121,6 +120,11 @@ app.post("/getMessage",(req,res)=>{
 app.post("/sendMessage",(req)=>{
     const {body}=req.body
     userServices.shared.sendMessage(body.chat,body.userId,body.sms)
+})
+
+app.post("/SoldCar",(req)=>{
+    const {body}=req.body
+    userServices.shared.soldCar(body)
 })
 
 app.listen(3000,()=>{

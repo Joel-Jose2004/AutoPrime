@@ -165,4 +165,14 @@ sendMessage(chat:number,userId:number,sms:string){
   })
 }
 
+soldCar(id:number){
+  const q="update carros set sold=? where id_carro=?";
+  const valor=1;
+  const values=[valor,id]
+
+  db.query(q,values,(err)=>{
+    if(err)console.log(err)
+  })
+}
+
 }

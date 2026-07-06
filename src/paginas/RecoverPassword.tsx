@@ -7,7 +7,7 @@ import { authService } from "../service/authService";
 
 
 
-export function Login(){
+export function RecoverPassword(){
 
     const [log,setLog]=useState({
         email:"",
@@ -93,13 +93,6 @@ export function Login(){
                                    value={log.email}
                                  onChange={(e)=>setLog(dados=>({...dados,email:e.target.value}))}/>
                                 
-                                 <FormLabel width={"100%"}>Palavra-Passe</FormLabel>
-                                 <Input
-                                 name="password"
-                                 value={log.password}
-                                  onChange={(e)=>setLog(dados=>({...dados,password:e.target.value}))}
-                                 />
-
                                 </VStack>
                                 
                                 </FormControl>
@@ -112,16 +105,9 @@ export function Login(){
                                  <Box width={"100%"} display={"flex"} justifyContent={"space-between"}
                                           flexDirection={"column"} >
           
-                                    <Text
-                                     color={"blackAlpha.800"}
-                                     width={"100%"} display={"flex"} justifyContent={"center"}>
-                                     Não tenho uma conta?
-                                     <Button variant={"link"} colorScheme="orange"
-                                       >Criar Conta</Button></Text>
-                       
+                                       <Button variant={"link"} colorScheme="orange" onClick={()=>navigate("/Login")}>Login</Button>
                                        <Button variant={"link"} colorScheme="orange" onClick={()=>navigate("/")}>Página Inicial</Button>
-                                       <Button variant={"link"} colorScheme="orange" onClick={()=>navigate("/RecoverPassword")}
-                                       >Esqueci a palavra-passe</Button>
+                                    
                        
                                    </Box>
          

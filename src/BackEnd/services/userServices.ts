@@ -59,8 +59,13 @@ export class userServices{
     })
   };
 
+
  sendMessage(chat:number,userId:number,sms:string) {
     userRepository.shared.sendMessage(chat,userId,sms)
+ }
+
+ soldCar(id:number){
+    userRepository.shared.soldCar(id)
  }
 
 }

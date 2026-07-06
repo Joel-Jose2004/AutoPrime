@@ -27,8 +27,8 @@ import {LuFuel} from 'react-icons/lu'
 import { IoColorFillSharp} from 'react-icons/io5'
 import { TbCircuitSwitchClosed } from 'react-icons/tb';
 import {SiCoronaengine} from "react-icons/si"
-
-
+import { BsLock } from 'react-icons/bs';
+import { AlertSoldDialogModal } from '../components/alertSoldDialog';
 
 interface carOfer{
   id_carro:number,
@@ -46,6 +46,7 @@ export function UserPage(){
 const [user,setUser]=useState<User>()
 const {isOpen:isOpenOferta,onOpen:onOpenOferta,onClose:onCloseOferta}=useDisclosure()
 const {isOpen:isOpenDialog,onOpen:onOpenDialog,onClose:onCloseDialog}=useDisclosure()
+const {isOpen:isOpenSoldDialog,onOpen:onOpenSoldDialog,onClose:onCloseSoldDialog}=useDisclosure()
 const [logado,setLogado]=useState(false)
 const listAllCars=userService(state=>state.listAllCars)
 const listAllOffersCars=userService(state=>state.listAllOffersCars)
@@ -167,6 +168,12 @@ const abrirAlertDialog=(id:number)=>{
   onOpenDialog()
 }
 
+const abrirAlertSoldDialog=(id:number)=>{
+   
+  setIdCarro(id)
+  onOpenSoldDialog()
+}
+
 const OpenChat=(userId:number)=>{
   createChat(userId,user?.id_users as number)
 }
@@ -221,7 +228,7 @@ const handleInput=(e:React.ChangeEvent<HTMLTextAreaElement>)=>{
                      <Img src={icone} height={"110px"}/>
                     <Text
                    fontFamily={"arial"} fontSize={{base:"20px",md:"25px",lg:"23px"}}
-                  color={"black"}>User</Text></Box>
+                  color={"black"}>{user?.nome}</Text></Box>
 
               <Box  width={{base:"90%",md:"60%",lg:"50%"}} display={"flex"} padding={"3px"}
                  alignItems={"center"} 
@@ -362,7 +369,10 @@ const handleInput=(e:React.ChangeEvent<HTMLTextAreaElement>)=>{
                             <Box display={"flex"}  padding={2} flexDirection={"column"}>
                                 <Text fontWeight={"bold"} color={"grey"} fontSize={"15px"}> {lista.brand}</Text>
                                 <Text fontWeight={"bold"} color={"blackAlpha.900"} fontSize={"20px"}>{lista.model}</Text>
-                            </Box>              
+                            </Box>
+
+                            <Box><BsLock cursor={"pointer"} color='green'
+                            onClick={()=>abrirAlertSoldDialog(lista.id_carro)}/></Box>              
                         </Flex> 
 
                       
@@ -405,7 +415,8 @@ const handleInput=(e:React.ChangeEvent<HTMLTextAreaElement>)=>{
                         
                         <ButtonGroup spacing='2' display={user?"flex":"none"}>
                           {lista.negotiable=="false" ?(
-                              <Button  variant={"unstyled"} onClick={()=>abrirAlertDialog(lista.id_carro)} >
+                              <Button  display={lista.id_owner==user?.id_users?"none":"flex"}
+                              variant={"unstyled"} onClick={()=>abrirAlertDialog(lista.id_carro)} >
                                 <FaBell color="brown" size={"60%"}/>
                               </Button>
                           ):(
@@ -554,6 +565,7 @@ const handleInput=(e:React.ChangeEvent<HTMLTextAreaElement>)=>{
       {/*----- Modal, alert Dialog e Drawer ---------*/}
            
         <AlertDialogModal isOpen={isOpenDialog} onClose={onCloseDialog} idCarro={idCarro}/>
+        <AlertSoldDialogModal isOpen={isOpenSoldDialog} onClose={onCloseSoldDialog} idCarro={idCarro}/>
           
       <Drawer
         isOpen={isOpenOferta}

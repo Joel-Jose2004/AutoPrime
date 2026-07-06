@@ -1,7 +1,8 @@
-import { Box, Button, Flex, Img, Text, useDisclosure, useToast, ButtonGroup, Input, Avatar, Spinner, Divider } from '@chakra-ui/react';
+import { Box, Button, Flex, Img, Text, useDisclosure, useToast, ButtonGroup, Input, Avatar, Spinner, Divider
+  , Menu,MenuList,MenuItem,MenuButton } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
 import { Card, CardFooter } from '@chakra-ui/react'
-import { FiPhone } from "react-icons/fi";
+import { FiLogOut, FiPhone } from "react-icons/fi";
 import im from "../assets/2021-bugatti-chiron-super-sport-300.jpg";
 import icone from '../assets/FullLogo-removebg-preview.png';
 import { GoMail } from "react-icons/go";
@@ -13,12 +14,12 @@ import {Drawer,DrawerBody,DrawerFooter,DrawerHeader,DrawerOverlay,DrawerContent,
 import { TbTrashX } from 'react-icons/tb';
 import { FaBell } from 'react-icons/fa6';
 import { AlertDialogModal } from '../components/alertDialog';
-import { TbUserCircle } from 'react-icons/tb';
 import {LuFuel} from 'react-icons/lu'
 import { IoColorFillSharp} from 'react-icons/io5'
 import { TbCircuitSwitchClosed } from 'react-icons/tb';
 import {SiCoronaengine} from "react-icons/si"
-
+import { FaUser } from 'react-icons/fa6';
+import { BsThreeDotsVertical } from "react-icons/bs";
 
 interface carOfer{
   id_carro:number,
@@ -34,7 +35,6 @@ interface carOfer{
 export function HomePage(){
 
 const [user,setUser]=useState<User>()
-
 const {isOpen:isOpenOferta,onOpen:onOpenOferta,onClose:onCloseOferta}=useDisclosure()
 const {isOpen:isOpenDialog,onOpen:onOpenDialog,onClose:onCloseDialog}=useDisclosure()
 const [logado,setLogado]=useState(false)
@@ -108,6 +108,28 @@ useEffect(()=>{
 
 },[user])
 
+const Logout=()=>{
+  localStorage.removeItem("auth")
+  localStorage.removeItem("authT")
+  setLogado(false)
+  verify()
+  
+}
+
+const Publicar=()=>{
+  if(user){
+    navigate("/Addcar")
+  }else{
+      toast({
+         title: "Erro",
+         description:"Faça o login",
+         status: "error",
+         duration: 3000,
+         isClosable: true
+        })
+   
+  }
+}
 
 const colocarOferta=()=>{
            setLoader(true)
@@ -175,8 +197,20 @@ const abrirAlertDialog=(id:number)=>{
                 {logado ? <Flex  width={"60%"}
                 alignItems={"center"} 
                 gap={5}>
-                     <TbUserCircle size={"50px"} color='brown' cursor={"pointer"}
-                     onClick={()=>navigate("/UserPage")}/>
+
+                <Menu>
+                  <MenuButton >
+                    <BsThreeDotsVertical />
+                  </MenuButton>
+                  <MenuList>
+                    <MenuItem display={"flex"} alignItems={"center"} gap={2} onClick={()=>navigate("/UserPage")}>
+                    <FaUser/>User</MenuItem>
+                    <MenuItem display={"flex"} alignItems={"center"} gap={2} onClick={()=>Logout()}>
+                    <FiLogOut/> Log Out</MenuItem>
+                  </MenuList>
+                </Menu>
+
+
                 </Flex>
                   :
                    <Button 
@@ -206,7 +240,7 @@ const abrirAlertDialog=(id:number)=>{
                             se queres vender publica também o teu produto.
                              </Text>
                         <Button width={"50%"} outline='link' colorScheme={"orange"} 
-                         onClick={()=>navigate("/AddCar")}>Publicar</Button>
+                         onClick={()=>Publicar()}>Publicar</Button>
                   </Box>
 
 
@@ -329,7 +363,8 @@ const abrirAlertDialog=(id:number)=>{
                         
                         <ButtonGroup spacing='2' display={user?"flex":"none"}>
                           {lista.negotiable=="false" ?(
-                              <Button  variant={"unstyled"} onClick={()=>abrirAlertDialog(lista.id_carro)} >
+                              <Button display={lista.id_owner==user?.id_users?"none":"flex"}
+                               variant={"unstyled"} onClick={()=>abrirAlertDialog(lista.id_carro)} >
                                 <FaBell color="brown" size={"60%"}/>
                               </Button>
                           ):(

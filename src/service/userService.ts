@@ -16,6 +16,7 @@ interface action{
   getChatById(userId:number):Promise<void>
   getMessage(chat:number):Promise<chatMessage[]>
   sendMessage(chanel:number,userId:number,sms:string):Promise<void>
+  soldCar(idCarro:number):Promise<void>
   cars:{},
   carsOfer:carOfer[]
   yourChats:chatType[]
@@ -157,6 +158,19 @@ sendMessage:async(chanel, userId,sms)=> {
       method:"POST",
       headers:{"Content-type":"aplication/json"},
       body:dado
+    })
+
+  }catch(err){
+    console.log(err)
+  }
+},
+
+soldCar:async(idCarro)=> {
+  try{
+   await axios.post("http://localhost:3000/SoldCar",{
+      method:"POST",
+      headers:{"Content-type":"aplication/json"},
+      body:idCarro
     })
 
   }catch(err){
